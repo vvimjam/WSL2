@@ -1,6 +1,6 @@
 # WSL2
 
-## Issue : Network connectivity over corperate VPN
+## Issue 1 : Network connectivity over corperate VPN
 When you open ubuntu wsl terminal and ping google it works when not connected to VPN but not when VPN connected. Follow below steps to get resolution.
 Note: You will have to repeat step 4 everytime you reconnect vpn or reboot main machine
 
@@ -44,3 +44,26 @@ In my case I get DNS issues when try to connect to internal stuff via browser (o
 ```Get-NetAdapter | Where-Object {$_.InterfaceDescription -Match "Cisco AnyConnect"} | Get-NetIPInterface```
 2. When running into problems on Windows 10 restore this default value with admin powershell (replace value at the end with your default value):
 ```Get-NetAdapter | Where-Object {$_.InterfaceDescription -Match "Cisco AnyConnect"} | Set-NetIPInterface -InterfaceMetric 1```
+
+
+
+## Issue 2 : Network connectivity over corperate VPN over HTTPS
+
+if you try you might be facing a SSL cert problem issue. To fix it follow below steps.
+```curl -fsSL https://download.docker.com/linux/ubuntu/gpg```
+
+Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the drive letter. 
+
+1. Go to windows crendential manager (Win + R -> credmgr.msc)
+2. Trusted Root Certification -> Ceritificates -> ZScaler -> Open -> Details -> Copy to file
+3. Select format as DER encoded
+4. Save it as zscaler_root.cer
+5. open your wsl2 ubuntu instance
+6. sudo cp /mnt/c/Users/your_name/Downloads/zscaler_root.cer ~/any_folder_or_path
+7. sudo openssl x509 -inform DER -in ~/path_to_your_cer_file/zscaler_root.cer -out ~/path_to_your_crt_file/zscaler_root.crt
+8. sudo cp ~/path_to_your_crt_file/zscaler_root.crt /usr/local/share/ca-certificates/
+9. sudo chmod 644 /usr/local/share/ca-certificates/zscaler_root.crt
+10. sudo update-ca-certificates
+11. You should see 1 added. 
+12. Try out the same curl command & you should not see the SSL error.
+
