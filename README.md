@@ -49,7 +49,7 @@ In my case I get DNS issues when try to connect to internal stuff via browser (o
 
 ## Issue 2 : Network connectivity over corperate VPN over HTTPS
 
-if you try you might be facing a SSL cert problem issue. To fix it follow below steps.
+if you try you might be facing a SSL cert problem issue. This is not a curl issue as curl request is being handled b the OS itself. To fix it follow below steps.
 ```curl -fsSL https://download.docker.com/linux/ubuntu/gpg```
 
 Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the drive letter. 
@@ -66,6 +66,10 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
 
 **Convert cer to crt format**
 1. sudo openssl x509 -inform DER -in ~/path_to_your_cer_file/zscaler_root.cer -out ~/path_to_your_crt_file/zscaler_root.crt
+2. You can also extract it as base64 file then you will use (untested). Notice PEM vs DER.
+3. openssl x509 -inform PEM -in <filepath>/certificate.cert -out certificate.crt
+
+
 
 **Copy to user level ca cert folder**
 1. sudo cp ~/path_to_your_crt_file/zscaler_root.crt /usr/local/share/ca-certificates/
