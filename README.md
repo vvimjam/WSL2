@@ -49,8 +49,9 @@ In my case I get DNS issues when try to connect to internal stuff via browser (o
 
 ## Issue 2 : Network connectivity over corperate VPN over HTTPS
 
-if you try you might be facing a SSL cert problem issue. This is not a curl issue as curl request is being handled b the OS itself. To fix it follow below steps.
+if you try you might be facing a SSL cert problem issue. 
 ```curl -fsSL https://download.docker.com/linux/ubuntu/gpg```
+You can also mitigate this temporarily by adding -J option which makes insure connections. But it is not a long term solution & is insecure. This is not a curl issue as curl request is being handled b the OS itself. To fix it follow below steps.
 
 Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the drive letter. 
 
