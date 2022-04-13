@@ -54,16 +54,25 @@ if you try you might be facing a SSL cert problem issue. To fix it follow below 
 
 Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the drive letter. 
 
+**Export root ca cert from host OS** 
 1. Go to windows crendential manager (Win + R -> credmgr.msc)
 2. Trusted Root Certification -> Ceritificates -> ZScaler -> Open -> Details -> Copy to file
 3. Select format as DER encoded
 4. Save it as zscaler_root.cer
-5. open your wsl2 ubuntu instance
-6. sudo cp /mnt/c/Users/your_name/Downloads/zscaler_root.cer ~/any_folder_or_path
-7. sudo openssl x509 -inform DER -in ~/path_to_your_cer_file/zscaler_root.cer -out ~/path_to_your_crt_file/zscaler_root.crt
-8. sudo cp ~/path_to_your_crt_file/zscaler_root.crt /usr/local/share/ca-certificates/
-9. sudo chmod 644 /usr/local/share/ca-certificates/zscaler_root.crt
-10. sudo update-ca-certificates
-11. You should see 1 added. 
-12. Try out the same curl command & you should not see the SSL error.
+
+**Copy to WSL2 ubuntu**
+1. open your wsl2 ubuntu instance
+2. sudo cp /mnt/c/Users/your_name/Downloads/zscaler_root.cer ~/any_folder_or_path
+
+**Convert cer to crt format**
+1. sudo openssl x509 -inform DER -in ~/path_to_your_cer_file/zscaler_root.cer -out ~/path_to_your_crt_file/zscaler_root.crt
+
+**Copy to user level ca cert folder**
+1. sudo cp ~/path_to_your_crt_file/zscaler_root.crt /usr/local/share/ca-certificates/
+2. sudo chmod 644 /usr/local/share/ca-certificates/zscaler_root.crt
+
+**Update ca cert store to include new crt file**
+1. sudo update-ca-certificates
+2. You should see 1 added. 
+3. Try out the same curl command & you should not see the SSL error.
 
