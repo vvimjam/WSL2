@@ -83,21 +83,27 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
   
 ## Useful commands
 
- **Copy file && Move*
+ **Copy file && Move**
+  ```
   cp target_file_path destination_file_path
   mv target_file_path destination_file_path
+  ```
 
- **Remove*
-  rm target_file_path
+ **Remove**
+  ```rm target_file_path```
   
-  ** display list of files**
+  **Display list of files**
+  ```
   ls (shows only non hidden files)
   ls -al (for hidden files)
+  ```
   
-  ** Search command history**
+  **Search command history**
+  ```
   history | gerp your_search_keyword
   ex: history | getp cert - Then all previous commands which you used containing the cert keyword will be shown
+  ```
   
-  ** Windows directories**
-  /mnt/c/ - If where your c drive is. The alphabet is the driver.
+  **Windows directories**
+  ```/mnt/c/ - If where your c drive is. The alphabet is the driver.```
   
