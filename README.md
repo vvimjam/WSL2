@@ -108,3 +108,6 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
   **Windows directories**
   ```/mnt/c/ - If where your c drive is. The alphabet is the driver.```
   
+  **show text file contents**
+  cat your_textfile
+  
