@@ -107,6 +107,12 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
      rmdir your_directory_path  
   ```
   
+  **Rename**
+  Instead of rename we can use move command to rename certs folder to _certs folder.
+  ```
+  mv certs _certs
+  ```
+  
   **Display list of files**
   ```
   ls (shows only non hidden files)
@@ -131,3 +137,8 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
   .wslconfig to configure settings globally across all installed distributions running on WSL 2. This is located at %userprofile%
   wsl.conf to configure settings per-distribution for Linux distros running on WSL 1 or WSL 2. This is located within ubuntu at /etc/wsl.conf
   ```
+  
+  **ubuntu service status**
+  Plus sign indicates running & - indicates stopped. 
+  ```service --status-all```
+  
