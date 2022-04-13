@@ -1,5 +1,8 @@
 # WSL2
 
+## Enabling WSL2
+If you install docker desktop then it will ask you to install WSL2 libraries. Or you can google WSL installation. If you install WSL2 libraries then you might not get the ubuntu OS along with it. For that google Ubuntu WSL download and an Microsoft store link should appear. Download via MS Store & you will see a new Ubuntu dropdown in windows terminal.
+
 ## Issue 1 : Network connectivity over corperate VPN
 When you open ubuntu wsl terminal and ping google it works when not connected to VPN but not when VPN connected. Follow below steps to get resolution.
 Note: You will have to repeat step 4 everytime you reconnect vpn or reboot main machine
@@ -82,16 +85,27 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
 3. Try out the same curl command & you should not see the SSL error.
   
   
-## Useful commands
+ ## Set communication btw windows app & docker in WSL ubuntu
+ ```
+ https://github.com/frcs6/DockerWSL-WindowsHost-Tutorial
+ ```
+  
+  
+## Useful commands & things to know
 
  **Copy file && Move**
   ```
   cp target_file_path destination_file_path
   mv target_file_path destination_file_path
   ```
+ **Create folder**
+ ```mkdir dir_name``` 
 
  **Remove**
-  ```rm target_file_path```
+  ```
+     rm target_file_path
+     rmdir your_directory_path  
+  ```
   
   **Display list of files**
   ```
@@ -111,3 +125,9 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
   **show text file contents**
   cat your_textfile
   
+  **WSL global config**
+  ```
+  You can configure the settings for your installed Linux distributions that will automatically be applied every time you launch WSL in two ways, by using:
+  .wslconfig to configure settings globally across all installed distributions running on WSL 2. This is located at %userprofile%
+  wsl.conf to configure settings per-distribution for Linux distros running on WSL 1 or WSL 2. This is located within ubuntu at /etc/wsl.conf
+  ```
