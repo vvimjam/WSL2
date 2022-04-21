@@ -16,6 +16,9 @@ Note: You will have to repeat step 4 everytime you reconnect vpn or reboot main 
 # Removes existing resolv conf
 sudo rm /etc/resolv.conf
 
+# If rm throws an error then mark the file as mutable
+sudo chattr -a -i /etc/resolv.conf
+
 # writes nameserver line to resolv.conf. 8.8.8.8 is google dns, you can either try that or the corperate dns address (nslookup).
 sudo bash -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
 ```
