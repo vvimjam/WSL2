@@ -110,8 +110,14 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
      rmdir your_directory_path  
   ```
   
-  **Rename**
-  Instead of rename we can use move command to rename certs folder to _certs folder.
+   **Remove all files within a dir**
+  /* is very important here.
+  ```
+     rm -r target_dir_path/*
+  ```
+  
+  **Rename or Move**
+  Instead of rename we can use move command to rename certs folder to _certs folder. This does not require -r flag.
   ```
   mv certs _certs
   ```
@@ -143,5 +149,13 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
   
   **ubuntu service status**
   Plus sign indicates running & - indicates stopped. 
-  ```service --status-all```
+  ```service --status-all
+  sudo service docker start```
+  
+  **ubuntu temp dirs**
+  Both /tmp and /var/tmp are used by programs as well as the system itself to store data temporarily. By default, all the files and data that gets stored in /var/tmp live for up to 30 days. Whereas in /tmp, the data gets automatically deleted after ten days.
+  ``` 
+  /var/tmp & /tmp
+  ```
+  
   
