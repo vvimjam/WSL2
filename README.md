@@ -107,7 +107,7 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
  **Remove**
   ```
      rm target_file_path
-     rmdir your_directory_path  
+     rmdir your_directory_path (if dir not empty this will complain use sudo rm -rf your_dir)
   ```
   
    **Remove all files within a dir**
