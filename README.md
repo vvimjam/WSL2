@@ -158,4 +158,9 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
   /var/tmp & /tmp
   ```
   
-  
+  **Search**
+  ``` 
+  find / -type f -name "your_filename" (case sensitive)
+  find / -type f -iname "filename*" (case insensitive)
+  remove -type to search for directories) 
+  ```
