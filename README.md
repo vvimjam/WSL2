@@ -5,12 +5,21 @@ If you install docker desktop then it will ask you to install WSL2 libraries. Or
 
 ## Issue 1 : Network connectivity over corperate VPN
 When you open ubuntu wsl terminal and ping google it works when not connected to VPN but not when VPN connected. Follow below steps to get resolution.
-Note: You will have to repeat step 4 everytime you reconnect vpn or reboot main machine
+Note: You will have to repeat step 1-3 everytime you reconnect vpn or reboot main machine
 
-1. Find out nameserver with windows powershell (during VPN Session). Copy the Address part.
+
+1. Set your VPN adapter (if you have Cisco AnyConnect) open a admin powershell
+
+- Find out your VPN adapter name: Get-NetIPInterface or  Get-NetAdapter (in my case: "Cisco AnyConnect")
+- Set adapter metric (Replace -Match with your name), in my case I have to run this after ever reboot or VPN reconnect:
+- Interface metric is used to determine route, windows use interface with lowest metric
+
+```Get-NetAdapter | Where-Object {$_.InterfaceDescription -Match "Cisco AnyConnect"} | Set-NetIPInterface -InterfaceMetric 6000```
+
+2. Find out nameserver with windows powershell (during VPN Session). Copy the Address part.
 ```nslookup```
 
-2. Add your corperate nameserver to resolv.conf
+3. Add your corperate nameserver to resolv.conf
 
 ```bash
 # Removes existing resolv conf
@@ -23,20 +32,12 @@ sudo chattr -a -i /etc/resolv.conf
 sudo bash -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
 ```
 
-3. Disable resolv conf generation in wsl config.
+4. Disable resolv conf generation in wsl config.
 ```bash
 sudo bash -c 'echo "[network]" > /etc/wsl.conf'
 sudo bash -c 'echo "generateResolvConf = false" >> /etc/wsl.conf'
 sudo chattr +i /etc/resolv.conf
 ```
-
-4. Set your VPN adapter (if you have Cisco AnyConnect) open a admin powershell
-
-- Find out your VPN adapter name: Get-NetIPInterface or  Get-NetAdapter (in my case: "Cisco AnyConnect")
-- Set adapter metric (Replace -Match with your name), in my case I have to run this after ever reboot or VPN reconnect:
-- Interface metric is used to determine route, windows use interface with lowest metric
-
-```Get-NetAdapter | Where-Object {$_.InterfaceDescription -Match "Cisco AnyConnect"} | Set-NetIPInterface -InterfaceMetric 6000```
 
 5. Restart wsl in powershell: wsl.exe --shutdown
 
