@@ -168,5 +168,5 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
   
   **Reverse Search**
   ```
-  ctrl + r will reverse search your previous commands in wondows & ubuntu
+  ctrl + r will reverse search your previous commands in wondows & ubuntu. Only upto 1000 lines
   ```
