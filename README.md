@@ -170,3 +170,20 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
   ```
   ctrl + r will reverse search your previous commands in wondows & ubuntu. Only upto 1000 lines
   ```
+  
+  **Search inline**
+  ```
+  ipconfig.exe /all | grep -i "DNS Server"
+  Pipe grep is used to search the results returned from ipconfig.exe /all. You can use pipe grep on other commands too. If you want also want to include next lines then add -A1. Where 1 is the lines you want. Ex: -A20 will get you next 20 lines.
+  
+  ipconfig.exe /all | grep -i -A1 "DNS Server"
+  ```
+  
+  **No sudo password prompt**
+  ````
+  sudo nano /etc/sudoers
+  find %admin ALL=(ALL) ALL or something like that. Below that paste your username. % symbol is a must.
+  %YOUR_USER_NAME ALL=(ALL) NOPASSWD: ALL
+  Save & close. Note: You will still need to use sudo but there wont be a password prompt.
+  ````
+ 
