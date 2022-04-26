@@ -45,7 +45,18 @@ sudo chattr +i /etc/resolv.conf
 
 
 ## Solution #2 
-Above solution worked for about a week after which i was having name resolution issues using name. After a day of trial and error what was found was if VPN dns addresses are at top of the resolve config then kerry websites work but other websites wont (Ex: google.com but 8.8.8.8 works), & when Wifi dns address was added at the top google.com was working but not kerry website. I've written below script to semi automate the priority switch. When you need to build something with external site dependencies like docker store then user "script.ps1 -p wifi" else when corporate network is needed use  "script.ps1 -p vpn". There are two parts to this 1. powershell script will read the windows adapter configs & will generate a file with those details 2. Bash script which will copy & replace that file from windows dir. Make sure you change the output ($new_resolv_conf_path) & input dirs as needed.
+Above solution worked for about a week after which I was having name resolution issues. 
+
+After a day of trial and error what was found was if VPN dns addresses are at top of the resolve config then kerry websites work but other websites wont (Ex: google.com but 8.8.8.8 works), & when Wifi dns address was added at the top google.com was working but not kerry website. 
+
+I've written the below script to semi automate the priority switch. When you need to build something with external site dependencies like docker store then user "script.ps1 -p wifi" else when corporate network is needed use  "script.ps1 -p vpn". There are two parts to this 
+1. powershell script will read the windows adapter configs & will generate a file with those details 
+2. Bash script which will copy & replace that file from windows dir. Make sure you change the output ($new_resolv_conf_path) & input dirs as needed.
+
+**Benefits over solution 1**
+- No need to disconnect VPN when accessing external domain sites.
+- No need to fetch cisco & wifi dns addresses
+- resolv.conf is updated semi automatically
 
 ```powershell
 param (
