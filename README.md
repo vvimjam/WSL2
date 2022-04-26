@@ -273,8 +273,10 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
   
   **ubuntu service status**
   Plus sign indicates running & - indicates stopped. 
-  ```service --status-all
-  sudo service docker start```
+  ```
+  service --status-all
+  sudo service docker start
+  ```
   
   **ubuntu temp dirs**
   Both /tmp and /var/tmp are used by programs as well as the system itself to store data temporarily. By default, all the files and data that gets stored in /var/tmp live for up to 30 days. Whereas in /tmp, the data gets automatically deleted after ten days.
@@ -311,7 +313,9 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
   ````
  
   **Shells**
-    Therea are multiple shells available for linux. BASH is the default shell. Others are ZShell (ZSH), CornShell(KSH), CShell(CSH). These are usually found at /bin folder (binary folder). You also have your cp, mkdir, mv default OS level binaries under /bin folder. You can also find bash & zsh & others under /bin. User level binaries are found at /user/local/bin folder.
+ ````
+   Therea are multiple shells available for linux. BASH is the default shell. Others are ZShell (ZSH), CornShell(KSH), CShell(CSH). These are usually found at /bin folder (binary folder). You also have your cp, mkdir, mv default OS level binaries under /bin folder. You can also find bash & zsh & others under /bin. User level binaries are found at /user/local/bin folder.
+ ````
     
   **launch docker container interactive shell / accessing php logs in docker container**
   -ti is interactive sh terminal (/bin/sh)  
