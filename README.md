@@ -44,6 +44,88 @@ sudo chattr +i /etc/resolv.conf
 6. Test it in wsl run: ping google.com - if this command works, you are done.
 
 
+## Solution #2 
+Above solution worked for about a week after which i was having name resolution issues using name. After a day of trial and error what was found was if VPN dns addresses are at top of the resolve config then kerry websites work but other websites wont (Ex: google.com but 8.8.8.8 works), & when Wifi dns address was added at the top google.com was working but not kerry website. I've written below script to semi automate the priority switch. When you need to build something with external site dependencies like docker store then user "script.ps1 -p wifi" else when corporate network is needed use  "script.ps1 -p vpn"
+
+```powershell
+param (
+    [string]$p = 'vpn'
+)
+
+# Set cisco adapter to highest priority
+Get-NetAdapter | Where-Object {$_.InterfaceDescription -Match "Cisco AnyConnect"} | Set-NetIPInterface -InterfaceMetric 6000
+
+# Get Cisco IPV4 addresses (for kerry communication ex: ipo.amer.kerry.com)
+$vpn_addresses = (Get-NetAdapter | Where-Object InterfaceDescription -like "*Cisco*" | Get-DnsClientServerAddress).ServerAddresses
+
+
+# Get Wifi IPV4 addresses (for non kerry communication ex: google.com)
+$non_vpn_addresses += (Get-NetAdapter | Where-Object InterfaceDescription -like "*Wi-Fi*" | Get-DnsClientServerAddress).ServerAddresses
+
+
+# Prepare resolv.conf contents
+$resolve_conf_contents = ''
+$OFS = "`r`n"
+$addresses = New-Object System.Collections.Generic.List[System.Object]
+
+If ($p -eq 'vpn') {
+
+    foreach ($address in $vpn_addresses) {
+        $addresses.Add($address);
+    }
+    
+    foreach ($address in $non_vpn_addresses) {
+        $addresses.Add($address);
+    }
+
+} 
+Else {
+    
+    foreach ($address in $non_vpn_addresses) {
+        $addresses.Add($address);
+    }
+
+    foreach ($address in $vpn_addresses) {
+        $addresses.Add($address);
+    }
+}
+
+
+foreach ($address in $addresses) {
+ $resolve_conf_contents += ('nameserver ' + $address + $OFS)
+}
+
+# Note do not exceed the name server list line above 240 chars. To get that list use 'ipconfig /all' and look for DNS Suffix Search List at the top.
+$resolve_conf_contents += 'search your_corporate_nameserver1 your_corporate_nameserver2 your_corporate_nameserver3'
+$resolve_conf_contents = $resolve_conf_contents.Trim();
+
+$new_resolv_conf_path = "D:\_Documents\WSL\resolv.conf";
+
+Write-Host('Generated file output');
+
+# Verify file & output to file
+if (-not(Test-Path -Path $new_resolv_conf_path -PathType Leaf)) {
+     try {
+         $null = New-Item -ItemType File -Path $new_resolv_conf_path -Force -ErrorAction Stop
+         Write-Host('New resolv.conf file create at ' + $new_resolv_conf_path)
+     }
+     catch {
+         throw $_.Exception.Message
+     }
+ }
+ else {
+    Write-Host('Clearing current resolv.conf contents');
+    Clear-Content $new_resolv_conf_path
+ }
+
+Write-Host('Writing to resolv.conf');
+[System.IO.File]::WriteAllText($new_resolv_conf_path, $resolve_conf_contents)
+
+Write-Host('Done');
+```
+
+
+
 ## If issues happen on main windows after above workaround
 In my case I get DNS issues when try to connect to internal stuff via browser (on Windows 10, f.e.: intranet), caused by the high metric value set in step 4 (basically kind of disabling VPN Route). So here is the workaround for the workaround:
 
