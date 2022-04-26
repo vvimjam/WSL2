@@ -310,3 +310,17 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
   Save & close. Note: You will still need to use sudo but there wont be a password prompt.
   ````
  
+  **Shells**
+    Therea are multiple shells available for linux. BASH is the default shell. Others are ZShell (ZSH), CornShell(KSH), CShell(CSH). These are usually found at /bin folder (binary folder). You also have your cp, mkdir, mv default OS level binaries under /bin folder. You can also find bash & zsh & others under /bin. User level binaries are found at /user/local/bin folder.
+    
+  **launch docker container interactive shell / accessing php logs in docker container**
+  -ti is interactive sh terminal (/bin/sh)  
+  ```
+   docker exec -ti container_name /bin/sh
+    
+    ls
+    sudo 777 -R ./writable (have to do this on first docker build as the php api has to write to this folder logs)
+    cd ./writable/logs
+    cat your_log_file_name.log
+    
+  ```
