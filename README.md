@@ -45,7 +45,7 @@ sudo chattr +i /etc/resolv.conf
 
 
 ## Solution #2 
-Above solution worked for about a week after which i was having name resolution issues using name. After a day of trial and error what was found was if VPN dns addresses are at top of the resolve config then kerry websites work but other websites wont (Ex: google.com but 8.8.8.8 works), & when Wifi dns address was added at the top google.com was working but not kerry website. I've written below script to semi automate the priority switch. When you need to build something with external site dependencies like docker store then user "script.ps1 -p wifi" else when corporate network is needed use  "script.ps1 -p vpn"
+Above solution worked for about a week after which i was having name resolution issues using name. After a day of trial and error what was found was if VPN dns addresses are at top of the resolve config then kerry websites work but other websites wont (Ex: google.com but 8.8.8.8 works), & when Wifi dns address was added at the top google.com was working but not kerry website. I've written below script to semi automate the priority switch. When you need to build something with external site dependencies like docker store then user "script.ps1 -p wifi" else when corporate network is needed use  "script.ps1 -p vpn". There are two parts to this 1. powershell script will read the windows adapter configs & will generate a file with those details 2. Bash script which will copy & replace that file from windows dir. Make sure you change the output ($new_resolv_conf_path) & input dirs as needed.
 
 ```powershell
 param (
@@ -65,7 +65,7 @@ $non_vpn_addresses += (Get-NetAdapter | Where-Object InterfaceDescription -like 
 
 # Prepare resolv.conf contents
 $resolve_conf_contents = ''
-$OFS = "`r`n"
+$OFS = "`n"
 $addresses = New-Object System.Collections.Generic.List[System.Object]
 
 If ($p -eq 'vpn') {
@@ -123,6 +123,19 @@ Write-Host('Writing to resolv.conf');
 
 Write-Host('Done');
 ```
+Create a bash script in wsl distro & ex: script.sh paste the below code & then make it executable using 'chmod u+x script.sh'. Run this script using 'sudo .\script.sh'.
+```bash
+#!/bin/bash
+
+sudo chattr -a -i /etc/resolv.conf
+
+sudo rm /etc/resolv.conf
+
+sudo cp /mnt/d/_Documents/WSL/resolv.conf /etc/resolv.conf
+
+sudo chattr +i /etc/resolv.conf
+```
+
 
 
 
