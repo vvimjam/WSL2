@@ -3,10 +3,21 @@
 ## Enabling WSL2
 If you install docker desktop then it will ask you to install WSL2 libraries. Or you can google WSL installation. If you install WSL2 libraries then you might not get the ubuntu OS along with it. For that google Ubuntu WSL download and an Microsoft store link should appear. Download via MS Store & you will see a new Ubuntu dropdown in windows terminal.
 
-## Issue 1 : Network connectivity over corperate VPN
+# Install / Enable WSL
+- Follow instructions at [Install WSL](https://docs.microsoft.com/en-us/windows/wsl/install)
+- Installing WSL should install ubuntu distro by default. If not install one from [Microsoft Store](https://apps.microsoft.com/store/detail/ubuntu/9PDXGNCFSCZV?hl=en-us&gl=US)
+- You can launch default distro using ```wsl``` command in cmd or any terminal.
+- You will be asked to create a local user & password when launching ubuntu. 
+
+# Network connectivity
+## Understanding newtwork connectivity
+- Disconnect kerry VPN and do a ping or telnet to google.com. You should be able to reach it.
+- Connect your corperate VPN and do a ping to any kerry internal website & it should fail. (aka **Issue#1**)
+
+## Solution 1 for Issue 1 : Network connectivity over cooperate VPN
 When you open ubuntu wsl terminal and ping google it works when not connected to VPN but not when VPN connected. Follow below steps to get resolution.
 Note: You will have to repeat step 1-3 everytime you reconnect vpn or reboot main machine
-
+Note: Name resolution used to work when using this method (google.com) when connected to VPN but this no longer works on my machine. You can still use this method to connect to corperate sites but you will have to disconnect VPN on host machine to access external site. Please see Solution 2 for an alternative.
 
 1. Set your VPN adapter (if you have Cisco AnyConnect) open a admin powershell
 
@@ -39,12 +50,13 @@ sudo bash -c 'echo "generateResolvConf = false" >> /etc/wsl.conf'
 sudo chattr +i /etc/resolv.conf
 ```
 
-5. Restart wsl in powershell: wsl.exe --shutdown
+5. Restart wsl in powershell:
+```bash
+wsl.exe --shutdown
+```
+6. Re open ubuntu & ping any corperate intranet site using name or ipaddress & it should work. Other sites like google should also be reachable. 
 
-6. Test it in wsl run: ping google.com - if this command works, you are done.
-
-
-## Solution #2 
+## Solution 2 for Issue 1
 Above solution worked for about a week after which I was having name resolution issues. 
 
 After a day of trial and error what was found was if VPN dns addresses are at top of the resolve config then kerry websites work but other websites wont (Ex: google.com but 8.8.8.8 works), & when Wifi dns address was added at the top google.com was working but not kerry website. 
@@ -134,7 +146,12 @@ Write-Host('Writing to resolv.conf');
 
 Write-Host('Done');
 ```
-Create a bash script in wsl distro & ex: script.sh paste the below code & then make it executable using 'chmod u+x script.sh'. Run this script using 'sudo .\script.sh'.
+
+
+### Bash script
+
+Create a bash script (ex: script.sh) in wsl distro & paste the below code. Then make it executable using 
+```chmod u+x script.sh```. Run this script using 'sudo .\script.sh'.
 ```bash
 #!/bin/bash
 
