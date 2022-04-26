@@ -326,5 +326,13 @@ Windows drivers can be accessed in WSL2 by navigating to /mnt/c where c is the d
     sudo 777 -R ./writable (have to do this on first docker build as the php api has to write to this folder logs)
     cd ./writable/logs
     cat your_log_file_name.log
-    
   ```
+    
+   **Viewwing log file details**
+    
+    - CAT: Drawback with CAT is it streams the entire contents of the text file. 
+    - If the file is too big the terminal will clear out the old contents & you will not be able to see it. Instead use below libraries
+    - tail your_file_name.txt (will show last 10 lines & this is live (auto refresh) so whenever a new line is added this will show it automatically)
+    - more your_file.txt (shows from the top lines in a paginated way, user arrows to navigate)
+    - less your_file.txt (shows from bottom lines in a paginated way)
+    
